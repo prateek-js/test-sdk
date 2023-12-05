@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SDK Testing Page</title>
+  <script type="module">
+    // Import the SDK instance
+    import sdkInstance from './mouse-events-sdk.js';
+
+    function startSDK() {
+      console.log('starting sdk');
+      sdkInstance.start();
+      document.getElementById('output').value = 'SDK started collecting events.';
+    }
+
+    function stopSDK() {
+      sdkInstance.stop();
+      document.getElementById('output').value = 'SDK stopped collecting events.';
+    }
+
+    function getData() {
+      // to print the data in json in text input
+      const data = sdkInstance.getData();
+      document.getElementById('output').value = data;
+    }
+
+    function resetData() {
+      sdkInstance.resetData();
+      document.getElementById('output').value = '';
+    }
+
+    // extra feature just to make capacity configurable
+    function setMaxCapacity() {
+      const maxCapacity = document.getElementById('maxCapacity').value;
+      sdkInstance.maxCapacity = parseInt(maxCapacity, 10);
+      document.getElementById('output').value = `Max capacity set to ${maxCapacity}.`;
+    }
+
+    // this was a little hacky as without window getting scope error
+    window.startSDK = startSDK;
+    window.stopSDK = stopSDK;
+    window.getData = getData;
+    window.resetData = resetData;
+    window.setMaxCapacity = setMaxCapacity; 
+  </script>
+</head>
+<body>
+  <h1>SDK Testing Page</h1>
+
+  <button onclick="startSDK()">Start SDK</button>
+  <button onclick="stopSDK()">Stop SDK</button>
+  <button onclick="getData()">Get Data</button>
+  <button onclick="resetData()">Reset</button>
+  <br><br><br>
+  <label for="maxCapacity">Set Max Capacity:</label>
+  <div>
+    <input type="number" id="maxCapacity" min="1" value="1000">
+    <button onclick="setMaxCapacity()">Apply</button>
+    <br><br><br>
+    <textarea id="output" rows="10" cols="50"></textarea>
+  </div>
+
+</body>
+</html>
